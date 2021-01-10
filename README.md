@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # NBA Position Predictor
 ![NBA](https://cdn.vox-cdn.com/thumbor/ytC-ZCsT-G-M1Fscy7oZUeZE9X0=/1400x788/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/19725578/TheRinger_Top25NBAPlayers_2.png)
 
@@ -52,3 +53,7 @@ Explanation
 
 ### Random Forest Results vs. Decision Tree 3 Results:
 ![DT3_RF_comp](/Screenshots/DT3_RF_comp.png?raw=true)
+=======
+# NBA-Position-Predictor
+This project utilizes machine learning to predict NBA player position based on their 2015-2017 season stats.  Different machine learning models are run in order to compare accuracy (Random Forests, X, Y).
+>>>>>>> 84758eefd8904aa410a272e156c6982761d67fb9
