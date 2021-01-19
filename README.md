@@ -1,7 +1,7 @@
 # NBA Position Predictor
 ![NBA](https://cdn.vox-cdn.com/thumbor/ytC-ZCsT-G-M1Fscy7oZUeZE9X0=/1400x788/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/19725578/TheRinger_Top25NBAPlayers_2.png)
 
-This Machine Learning example uses 15 seasons (2005-2020) of NBA player statistics (the features) to predict the position of each player (the target).  Machine Learning models include Decision Trees, Random Forests, SVMs and Gradient Boosting.  An example PCA transformation of X-data is included as well.  Each model is then evaluated and compared to the others to determine which Machine Learning model works best for this particular set of NBA data.
+This Machine Learning example uses 15 seasons (2005-2020) of NBA player statistics (the features) to predict the position of each player (the target).  Machine Learning models include Decision Trees, Random Forests, SVMs and Gradient Boosting.  An example PCA transformation of X-data is included as well.  Each model is then evaluated and compared to the others to determine which Machine Learning model works best for this particular set of NBA data.  Specific players are fed into the best model, and interesting insights are made into which players truly deviate from the norms of their respective position and perhaps which position they may be more suited for.
 
 Note: Stats are per 36 minutes, *not* per game.  This ensures that the players' statistics are a fairer representation of the position's output.  For instance, if a player only averages 5 min/game, his per game stats would be representative of that *player's* individual production, but for the purposes of predicting their position, does not say much.  Stats per 36 minutes scales the data and makes it more meaningful.
 
@@ -131,7 +131,7 @@ X_test_pca = X_pca.transform(X_test_scaled)
 X_train_pca_df = pd.DataFrame(data = X_train_pca, columns = ["PC1", "PC2", "PC3"])
 X_test_pca_df = pd.DataFrame(data = X_test_pca, columns = ["PC1", "PC2", "PC3"])
 ```
-The code above generates the following dataset:
+The code above generates the above dataset.
 ![pca_table](/Screenshots/pca_table.png?raw=true)
 
 PCA transformation of X-data is generally performed on large datasets in order to reduce the number of dimensions in the dataset and make it easier for the model to run.  It transforms the X-dataset, meaning you no longer have your original features as columns; they are now split into "Principal Components," and an explained variance ratio can be computed which tells you how much of the explained variance was captured in the dataset - what percent could it make sense of?  For a dataset of this size, PCA transformation of X-data would typically not be used; it was only included for example's sake, and was only performed on one dataset.
