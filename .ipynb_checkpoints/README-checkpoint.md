@@ -54,6 +54,7 @@ We can glean useful information from the above chart.  We see that in terms of, 
     bar_chart_df.plot(kind='bar', figsize = (12, 8), title='Bar Chart of Main Stats across all 5 Positions')
 
 ![BarChart](/Screenshots/BarChart.png?raw=true)
+
 This simple bar chart shows the five main basketball statistics - Points, Rebounds, Assists, Steals and Blocks - and how they are distributed among the five positions.  As mentioned above, points/36 minutes do not differ that greatly position-by-position; rebounds and assists, however, vary greatly.  We can also see in yellow that centers average signficantly more blocks than other positions - blocks in general are hard to come by, so while centers average only 1.6 blocks/36 minutes, point guards average only .26 blocks/36 minutes, meaning in this particular dataset, centers average 144% more blocks/36 minutes than do point guards.  This feature could potentially be deemed one of the more important ones by the upcoming models.
 
 ### Seaborn Pair Plot:
@@ -66,6 +67,7 @@ This simple bar chart shows the five main basketball statistics - Points, Reboun
     sns_plot
     
 ![SeabornChart](/Screenshots/SeabornChart.png?raw=true)
+
 Here we see scatter plots of all possible x/y-axis combinations.  The first thing I notice is the general positive correlation in these graphs - meaning, as the x-axis values increase, so do the y-values.  This makes sense to me, as it tells me that the better a player is at one particular category, chances are, they are also good at other statistical categories (good players don't just do one thing well).  However, with TRB and AST, it appears the opposite is true: generally speaking, the more assists a player has, or the more rebounds,  the less of the other stat they will have.
 
 The diagonal gives us insight into the distribution of each variable, broken down by position - it helps visualize the ranges in values by position.  Looking at the TRB vs. TRB intersection, for example, we see that centers have a longer tail than other positions, while for the AST metric, point guards have a longer tail than other positions - the longer tail indicates a wider distribution, a wider range of values).  While most categories have varied distributions, the PTS distribution remains relatively steady across all five positions.
