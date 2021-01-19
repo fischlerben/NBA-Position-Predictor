@@ -359,9 +359,48 @@ The Random Forest 1 model correctly predicted all 5 positions in the "position" 
 
 The Random Forest 1 model correctly predicted 3 of the 7 positions in the "positionless" dataframe: it correctly predicted James Harden as a SG, Draymond Green as a PF, and Giannis Antetokounmpo as a PF.  However, it thought PG Ben Simmons was a PF, PG Westbrook was a SG, PF LeBron James was a SF and C Marc Gasol was a PF.  For a center to be mistaken for a power forward, and vice-versa, or for a point guard to be mistaken for a shooting guard, and vice-versa, is not an egregious error.  These positions are similar and share similar responsibilities, and oftentimes, these players do in fact play both positions over the course of a season, or even at different points in the same game.  The most interesting finding here is the one relating to PG Ben Simmons: the model thought he was a PF.  This is something I expected to, and am glad to, see.  Ben Simmons is 6'10", which is very tall for a point guard.  He is also a notoriously bad shooter for his position, rarely shooting from the outside, and mostly missing when he does.  Therefore, his stats are more similar to those of power forwards, grabbing rebounds and shooting poorly from the outside.  This is why the model thought he was a power forward.
 
+### Let's do the same thing, but this time, we'll use the 2020-2021 season statistics for my favorite NBA team, the New York Knicks.
+### At this point in time the season is only 15-games through, so take this model's predictions with a grain of salt:
+
+    # Load in 2020-2021 Knicks dataframe:
+    knicks_csv_path = Path('CSVs/knicks.csv')
+    knicks_df = pd.read_csv(knicks_csv_path)
+
+    # This particular dataset did not contain a "Position" column.  Let's add one ourselves:
+    positions = {'Position': ['PF', 'SG', 'C', 'PG', 'SF', 'SF', 'SG', 'C', 'PG', 'SG', 'PF', 'PG', 'PG', 'SG', 'SF', 'PG']}
+    df_positions = pd.DataFrame(positions)
+    knicks_df['Pos'] = df_positions
+
+    # Filter DataFrame to only include rows with at least 100 Minutes Played:
+    # We are only 15 games through the 2020-2021 season at the time of this writing,
+    # so a few players who have been injured have very few minutes: remove them
+    # from the dataset.
+
+    knicks_df = knicks_df[knicks_df.MP >= 100]
+
+    # Drop/Re-order columns to mimic Random Forest 1's dataset:
+    knicks_df = knicks_df[['PTS', 'TRB', 'ORB', 'AST', 'STL', 'BLK', 'FG', 'FGA', 'FG%', '3P', '3PA', '3P%', '2P', '2PA', '2P%', 'FT', 'FTA', 'FT%', 'PF', 'TOV']]
+
+    # Replace "NaN" values with "0" instead of dropping null rows completely (helps preserve the data):
+    knicks_df[np.isnan(knicks_df)] = 0.0
+    
+    # Scale data (model data was scaled, so this data needs to be scaled as well):
+    knicks_df_scaled = scaler.fit_transform(knicks_df)
+
+This left me with a dataframe exactly like that of Random Forest 1.  Now all I had to do was feed this dataframe into Random Forest 1's model, and see what it predicted:
+
+    knicks_predictions = rf1_model.predict(knicks_df_scaled)
+
+- The Random Forest 1 model correctly predicted 7 of the 9 positions: it correctly predicted Julius Randle as a PF, Mitchell Robinson as a C, Elfrid Payton as a PG, Reggie Bullock as a SF, Austin Rivers as a SG, Nerlens Noel as a C and Immanuel Quickley as a PG.  
+- However, it thought SG RJ Barrett was a SF and it thought SF Kevin Knox was a SG.
+- What I expected to see is exactly what happened - SG RJ Barrett was *not* in fact identified as a SG, or even as a PG.  This is because RJ Barrett, at least at this point in his young career, is an inconsistent, abysmal shooter who scores most of his points in the paint.
+- This information is useful because it can be one of the factors in setting lineups - which players can play multiple positions, or which players could see success trying their hand in a new role.  In this particular case with Barrett, it could be a warning signal to the Knicks not to play him at SG, but to instead play him at what the model predicted he was, a SF.  Perhaps the Knicks can switch Barrett and Knox's positions - play Barrett at SF and Knox at SG, like the model predicted.
+
 ---
     
 ## Ways to improve model:
 The first, and most obvious, way to improve the model would be to use a larger dataset; my dataset contained 15 seasons and 4051 rows of data (after filtering), which is not small, but a larger dataset with more training/testing data could have benefitted.  Another way to improve the models' accuracy would be to filter the dataframe even further: I only included players with at least 820 minutes played in the season (10 min/game * 82 games), which I felt was a good number to use because it filtered out rarely-used players while still keeping a good amount of the data.  Using a higher threshold of minutes played would ensure that the players included in the dataset are truly representative of that position's output.
+
+I also think a key feature was missing from the original dataset: the player's height.  This is a huge factor in determining one's position, and I believe if that feature was included in the original dataset, it would have been deemed by the models as one of the most important feautures and would have ultimately increased accuracy scores across the board.  More robust feature engineering in general would serve this dataset well.
 
 In addition, today's NBA is becoming increasingly more "positionless".  Players' skill-sets are much more thorough and comprehensive than they used to be - back in the day, centers typically did not shoot three pointers and point guards did not grab many rebounds.  But in today's game, one's "position" on paper does not mean all that much; players have a variety of skills, and like we saw above in Random Forest 1's predictions, it is not so easy to predict positions anymore in the NBA.  Using seasons from many years ago, much older than 15 years - when the game was more rigid than it is today and players mainly stuck to the traditional responsibilities of their respective position - would make it easier for the model to make predictions.  A next step could be to use another Random Forest model using the same 20 features, but this time, use a different dataset, one containing NBA data from, say, 1980-1990, and see how accurate the model is compared to the model's accuracy using more current NBA data.
