@@ -7,6 +7,8 @@ Note: Stats are per 36 minutes, *not* per game.  This ensures that the players' 
 
 CSV Datasets obtained from Basketball-Reference.com
 
+![Demo](/Screenshots/Demo.gif?raw=true)
+
 ---
 
 ## Data Pre-Processing:
