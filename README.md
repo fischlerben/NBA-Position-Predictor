@@ -20,7 +20,7 @@ I then sliced that dataframe to only include relevant features (dropping columns
 
     df = df.replace("C-PF","C")
 
-This was done for every combination.  Last thing to do was to round all columns to 2 decimal places, for simplicity's sake:
+This was done for every combination.  Last thing to do was to round all columns to 2 decimal places: for simplicity's sake, only 1 conversion is shown here:
 
     df = df.round({'PTS': 2})
     
